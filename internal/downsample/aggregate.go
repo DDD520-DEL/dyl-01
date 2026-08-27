@@ -37,7 +37,10 @@ func (d *Downsampler) DownsampleWith(points model.PointList, agg Aggregation) mo
 	buckets := make(map[int64]*bucket)
 	var order []int64
 	for _, p := range points {
-		key := (p.Timestamp + d.interval - 1) / d.interval * d.interval
+		// Floor the timestamp to the bucket start. Points landing exactly on
+		// a bucket boundary belong to that bucket, not the next one, so we
+		// round down rather than (ts + interval - 1) / interval.
+		key := p.Timestamp / d.interval * d.interval
 		b, ok := buckets[key]
 		if !ok {
 			b = &bucket{start: key, min: p.Value, max: p.Value}

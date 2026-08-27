@@ -22,5 +22,5 @@ func New(interval int64) *Downsampler {
 // Downsample aggregates points into buckets of width Interval. Each bucket
 // emits one point with the mean value, timestamped at the bucket start.
 func (d *Downsampler) Downsample(points model.PointList) model.PointList {
-	return d.DownsampleWith(points, AggMax)
+	return d.DownsampleWith(points, AggAvg)
 }
