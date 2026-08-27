@@ -43,9 +43,13 @@ func (m *Memtable) Points() model.PointList {
 	return sorted
 }
 
-// Drain returns the sorted points for the caller to persist.
+// Drain returns the sorted points for the caller to persist and resets the
+// buffer so the flushed points are not retained or read again after a flush.
+// Resetting to zero length keeps the backing array for reuse without leaking
+// memory across flushes.
 func (m *Memtable) Drain() model.PointList {
 	sorted := m.Points()
+	m.points = m.points[:0]
 	return sorted
 }
 
