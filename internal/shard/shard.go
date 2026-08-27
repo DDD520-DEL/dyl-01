@@ -128,13 +128,6 @@ func (s *Shard) loadBlocks() error {
 		}
 		s.blocks = append(s.blocks, b)
 	}
-	for _, p := range paths {
-		b, err := storage.ReadBlock(p)
-		if err != nil {
-			return err
-		}
-		s.blocks = append(s.blocks, b)
-	}
 	return nil
 }
 

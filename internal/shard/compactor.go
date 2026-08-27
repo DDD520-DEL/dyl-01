@@ -31,13 +31,19 @@ func (s *Shard) Compact() error {
 	}
 
 	blockDir := s.dir + "/blocks"
+
+	// Remove every previously flushed block file before writing the merged
+	// blocks. The old blocks are superseded by the merge below; leaving any
+	// on disk would make a reopen load both the stale old block and the new
+	// merged block, resurrecting every point as a duplicate. Remove all of
+	// them (not all-but-one) and surface the error instead of swallowing it,
+	// so a failed delete cannot leave a half-cleaned directory behind.
 	oldPaths, err := storage.ListBlocks(blockDir)
 	if err == nil {
-		for i, p := range oldPaths {
-			if i == 0 {
-				continue
+		for _, p := range oldPaths {
+			if rmErr := os.Remove(p); rmErr != nil && !os.IsNotExist(rmErr) {
+				return rmErr
 			}
-			_ = os.Remove(p)
 		}
 	}
 
