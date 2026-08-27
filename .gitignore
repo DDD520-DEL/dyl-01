@@ -1,0 +1,6 @@
+# Calibration worktrees and runtime artifacts are not part of the clean tree.
+.bug-bases/
+smoke*.log
+data/
+wal/
+*.exe
