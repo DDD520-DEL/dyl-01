@@ -105,10 +105,7 @@ func (s *Shard) recoverFromWAL() error {
 	if err != nil {
 		return err
 	}
-	for i, rec := range records {
-		if i == 0 {
-			continue
-		}
+	for _, rec := range records {
 		s.mem.Insert(model.Point{SeriesID: rec.SeriesID, Timestamp: rec.Timestamp, Value: rec.Value})
 	}
 	return nil

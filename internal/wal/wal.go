@@ -97,7 +97,6 @@ func (w *WAL) Append(r Record) error {
 		if err := w.rotate(); err != nil {
 			return err
 		}
-		return nil
 	}
 	buf := make([]byte, headerBytes)
 	encodeRecord(buf, r)
