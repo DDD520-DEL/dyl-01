@@ -1,0 +1,21 @@
+# Docker build context exclusions for the TSDB engine.
+# The vendored dependency tree is required for the offline build and must
+# never be excluded.
+.git
+.claude
+.bug-bases
+verifycase
+cases
+workspaces
+case_metadata
+private_oracles
+evidence
+runner
+staging
+coordination
+*.jsonl
+*.log
+*.exe
+smoke-data
+data
+wal
