@@ -8,7 +8,7 @@ import (
 // QueryByLabel returns the samples of every series carrying the label
 // "name=value" in [start, end], merged across shards.
 func (s *Store) QueryByLabel(name, value string, start, end int64) (model.PointList, error) {
-	ids := s.idx.MatchLabel(value, name)
+	ids := s.idx.MatchLabel(name, value)
 	if len(ids) == 0 {
 		return nil, nil
 	}

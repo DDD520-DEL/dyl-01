@@ -44,7 +44,7 @@ func (s *SeriesIndex) GetOrCreate(series model.Series) uint64 {
 	s.byKey[key] = id
 	s.byID[id] = key
 	for name, value := range series.Labels {
-		label := value + "=" + name
+		label := name + "=" + value
 		if s.byLabel[label] == nil {
 			s.byLabel[label] = make(map[uint64]bool)
 		}
