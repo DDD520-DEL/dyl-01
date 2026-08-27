@@ -152,9 +152,12 @@ func (s *Shard) Covers(ts int64) bool {
 	return ts >= s.start && ts < s.end
 }
 
-// Overlaps reports whether [start, end] intersects this shard's range.
+// Overlaps reports whether the inclusive query range [start, end] intersects
+// this shard's half-open range [s.start, s.end). The ranges intersect iff the
+// query starts before the shard's exclusive end and ends at or after the
+// shard's inclusive start.
 func (s *Shard) Overlaps(start, end int64) bool {
-	return start < s.end && end >= s.end
+	return start < s.end && end >= s.start
 }
 
 // Close releases the WAL and blocks. The shard must not be used afterwards.

@@ -95,6 +95,9 @@ func (s *Store) shardFor(ts int64) (*shard.Shard, error) {
 }
 
 // overlappingShards returns all shards whose range intersects [start, end].
+// The query range is inclusive on both ends; a query that spans a shard
+// boundary therefore returns every shard covering that span so that no
+// boundary points are dropped.
 func (s *Store) overlappingShards(start, end int64) []*shard.Shard {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -102,7 +105,6 @@ func (s *Store) overlappingShards(start, end int64) []*shard.Shard {
 	for _, sh := range s.shards {
 		if sh.Overlaps(start, end) {
 			out = append(out, sh)
-			break
 		}
 	}
 	return out
